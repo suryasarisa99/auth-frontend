@@ -39,7 +39,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
   function copy(value) {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     setShowCopyDialog(true);
-    // navigator.clipboard.writeText(value);
+    navigator.clipboard.writeText(value);
     copyTimerRef.current = setTimeout(() => {
       setShowCopyDialog(false);
     }, 1200);
