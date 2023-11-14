@@ -17,7 +17,7 @@ export default function CreateTotp({ cu, setAuths, onCancel }) {
               {
                 id: auth.currentUser.uid,
                 name: e.target.name.value,
-                key: e.target?.token?.value,
+                key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
               }
             )
             .then((res) => {
