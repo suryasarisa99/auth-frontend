@@ -12,8 +12,8 @@ export default function CreateTotp({ cu, setAuths, onCancel }) {
           axios
             .post(
               autoGen
-                ? "http://192.168.0.169:3000/create-auth"
-                : "http://192.168.0.169:3000/post-auth",
+                ? "https://2fa-b.vercel.app/create-auth"
+                : "https://2fa-b.vercel.app/post-auth",
               {
                 id: auth.currentUser.uid,
                 name: e.target.name.value,
@@ -21,7 +21,6 @@ export default function CreateTotp({ cu, setAuths, onCancel }) {
               }
             )
             .then((res) => {
-              console.log(res.data);
               setAuths((prvAuths) => [...prvAuths, res.data.auth]);
             });
           onCancel();

@@ -19,12 +19,11 @@ export default function ShowAuths({ cu, auths, setAuths }) {
   const [selected, setSelected] = useState([]);
   function getAuths() {
     axios
-      .post("http://192.168.0.169:3000", {
+      .post("https://2fa-b.vercel.app", {
         id: auth.currentUser.uid,
       })
       .then((res) => {
         setAuths(res.data.totps);
-        console.log(res.data);
       });
   }
   function openOverlay() {
@@ -42,7 +41,6 @@ export default function ShowAuths({ cu, auths, setAuths }) {
     setShowCopyDialog(true);
     // navigator.clipboard.writeText(value);
     copyTimerRef.current = setTimeout(() => {
-      console.log("remmoved copy");
       setShowCopyDialog(false);
     }, 1200);
   }
@@ -60,7 +58,6 @@ export default function ShowAuths({ cu, auths, setAuths }) {
   }
   function onSelect(ind, e) {
     if (e) e.stopPropagation();
-    console.log(ind);
 
     setSelected((prv) => {
       if (prv.includes(ind))
@@ -123,12 +120,10 @@ export default function ShowAuths({ cu, auths, setAuths }) {
                   setAuths((auth) =>
                     auths.filter((auth, index) => !selected.includes(index))
                   );
-                  axios
-                    .post("http://192.168.0.169:3000/delete", {
-                      id: cu.uid,
-                      selected,
-                    })
-                    .then((res) => console.log(res.data));
+                  axios.post("https://2fa-b.vercel.app/delete", {
+                    id: cu.uid,
+                    selected,
+                  });
                   setSelected([]);
                   setLongPress(false);
                 }}
@@ -153,10 +148,6 @@ export default function ShowAuths({ cu, auths, setAuths }) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              Array.from(e.target.mySelected).forEach((item) => {
-                if (item.checked) console.log(item.value);
-              });
-              // console.log(e.target.mySelected.);
             }}
           >
             {auths.map((auth, ind) => (
