@@ -143,7 +143,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
           </motion.div>
         )}
       </div>
-      <div className="auths" style={{ marginTop: longPress ? "20px" : "0" }}>
+      <div className="auths" style={{ marginTop: longPress ? "28px" : "0" }}>
         {longPress ? (
           <form
             onSubmit={(e) => {
