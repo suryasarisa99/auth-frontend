@@ -217,8 +217,6 @@ export default function ShowAuths({ cu, auths, setAuths }) {
                 />
               </div>
             ))}
-            <p style={{ marginTop: "30px" }}>{t1}</p>
-            <p>{t2}</p>
           </form>
         ) : (
           <>
