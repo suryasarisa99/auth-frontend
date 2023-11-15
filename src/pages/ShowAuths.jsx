@@ -17,13 +17,16 @@ export default function ShowAuths({ cu, auths, setAuths }) {
   const copyTimerRef = useRef(null);
   const [longPress, setLongPress] = useState(false);
   const [selected, setSelected] = useState([]);
+
+  const [t1, setT1] = useState(0);
+  const [t2, setT2] = useState(0);
   function getAuths() {
     axios
       .post("https://2fa-b.vercel.app", {
         id: auth.currentUser.uid,
       })
       .then((res) => {
-        setAuths(res.data.totps);
+        if (res.data.totps) setAuths(res.data.totps);
       });
   }
   function openOverlay() {
@@ -45,8 +48,51 @@ export default function ShowAuths({ cu, auths, setAuths }) {
     }, 1200);
   }
 
+  // const itemHeightRef = useRef(77.108);
+  // const topBarHeightRef = useRef(9.708);
+  const itemHeightRef = useRef(78.092);
+  const topBarHeightRef = useRef(57);
+
+  // useRef(() => {
+  //   // itemHeightRef.current = longPress ? 78.092 + 0.1 : 77.108 + 1.5;
+  //   itemHeightRef.current = longPress ? 78.092 + 0.1 : 77.108;
+  //   topBarHeightRef.current = longPress ? 57 : 9.708;
+  //   topBarHeightRef.current = longPress ? 57 : 9.708;
+  // }, [longPress]);
+
+  function calculateItem(y) {
+    const topHeight = topBarHeightRef.current + 32 - 9;
+    // console.log(Math.ceil((y - topHeight) / itemHeightRef.current));
+    const result = (y - topHeight) / itemHeightRef.current;
+    console.log(Math.floor(result));
+    return Math.floor(result);
+    // let dot = document.createElement("div");
+    // dot.className = "dot";
+    // dot.style.top = topHeight + "px";
+    // document.documentElement.appendChild(dot);
+  }
+  // 77.108
+  // 78.092
+  // 0.984
+
+  // topbar: 18.708 - 9 = 9.708
+  // topbar: 66 -9 = 57
+  // auths: paddingTop: 32
   const longPressRef = useRef(null);
-  function onLongPress(ind) {
+  function onLongPress(e, ind) {
+    // console.log(e.touches);
+    // if (e.touches.length >= 2) {
+    //   let y1 = calculateItem(e.touches[0].clientY);
+    //   let y2 = calculateItem(e.touches[1].clientY);
+    //   let s = y1 < y2 ? y1 : y2;
+    //   let b = y1 > y2 ? y1 : y2;
+    //   let temp = [];
+    //   for (let i = s; i <= b; i++) {
+    //     temp.push(i);
+    //   }
+    //   setSelected(temp);
+    //   setTimeout(() => setLongPress(true), 400);
+    // }
     if (!longPress)
       longPressRef.current = setTimeout(() => {
         setLongPress(true);
@@ -90,7 +136,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
     if (timer > 95) {
       setTimeout(() => {
         getAuths();
-      }, 1800);
+      }, 1200);
     }
   }, [timer]);
 
@@ -143,7 +189,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
           </motion.div>
         )}
       </div>
-      <div className="auths" style={{ marginTop: longPress ? "28px" : "0" }}>
+      <div className="auths" style={{ marginTop: longPress ? "26px" : "0" }}>
         {longPress ? (
           <form
             onSubmit={(e) => {
@@ -164,13 +210,15 @@ export default function ShowAuths({ cu, auths, setAuths }) {
                 <Box2
                   key={ind}
                   auth={auth}
-                  onLongPress={onLongPress}
                   onLeave={onLeave}
+                  onLongPress={onLongPress}
                   onSelect={onSelect}
                   ind={ind}
                 />
               </div>
             ))}
+            <p style={{ marginTop: "30px" }}>{t1}</p>
+            <p>{t2}</p>
           </form>
         ) : (
           <>
@@ -226,7 +274,7 @@ function Box2({ auth, copy, onLongPress, onLeave, onSelect = () => {}, ind }) {
   return (
     <div
       className="auth-box-2"
-      onTouchStart={() => onLongPress(ind)}
+      onTouchStart={(e) => onLongPress(e, ind)}
       onTouchEnd={onLeave}
       onClick={() => onSelect(ind)}
     >
