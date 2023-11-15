@@ -32,7 +32,7 @@ export default function CreateTotp({ cu, setAuths, onCancel }) {
           <input
             type="checkbox"
             checked={autoGen}
-            onClick={() => setAutoGen((prv) => !prv)}
+            onChange={() => setAutoGen((prv) => !prv)}
           />
           <span>Auto Generate Key</span>
         </div>

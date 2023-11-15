@@ -78,29 +78,54 @@ export default function ShowAuths({ cu, auths, setAuths }) {
   // topbar: 18.708 - 9 = 9.708
   // topbar: 66 -9 = 57
   // auths: paddingTop: 32
+
+  // console.log(e.touches);
+  // if (e.touches.length >= 2) {
+  //   let y1 = calculateItem(e.touches[0].clientY);
+  //   let y2 = calculateItem(e.touches[1].clientY);
+  //   let s = y1 < y2 ? y1 : y2;
+  //   let b = y1 > y2 ? y1 : y2;
+  //   let temp = [];
+  //   for (let i = s; i <= b; i++) {
+  //     temp.push(i);
+  //   }
+  //   setSelected(temp);
+  //   setTimeout(() => setLongPress(true), 400);
+  // }
+
+  const longPressTimerRef = useRef(null);
   const longPressRef = useRef(null);
   function onLongPress(e, ind) {
-    // console.log(e.touches);
-    // if (e.touches.length >= 2) {
-    //   let y1 = calculateItem(e.touches[0].clientY);
-    //   let y2 = calculateItem(e.touches[1].clientY);
-    //   let s = y1 < y2 ? y1 : y2;
-    //   let b = y1 > y2 ? y1 : y2;
-    //   let temp = [];
-    //   for (let i = s; i <= b; i++) {
-    //     temp.push(i);
-    //   }
-    //   setSelected(temp);
-    //   setTimeout(() => setLongPress(true), 400);
-    // }
-    if (!longPress)
-      longPressRef.current = setTimeout(() => {
+    if (!longPress) {
+      longPressRef.current = e.currentTarget;
+      longPressTimerRef.current = setTimeout(() => {
         setLongPress(true);
         setSelected([ind]);
-      }, 400);
+      }, 550);
+    }
   }
   function onLeave() {
-    if (longPressRef.current) clearTimeout(longPressRef.current);
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+      longPressRef.current = null;
+    }
+  }
+  function onMove(e) {
+    const targetElement = document.elementFromPoint(
+      e.touches[0].clientX,
+      e.touches[0].clientY
+    );
+    if (
+      longPressRef.current &&
+      longPressTimerRef.current &&
+      !(
+        longPressRef.current == targetElement ||
+        !longPressRef.current.contains(targetElement)
+      )
+    ) {
+      clearTimeout(longPressTimerRef.current);
+    }
   }
   function onSelect(ind, e) {
     if (e) e.stopPropagation();
@@ -204,7 +229,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
                     name="mySelected"
                     value={ind}
                     checked={selected.includes(ind)}
-                    onClick={(e) => onSelect(ind, e)}
+                    onChange={(e) => onSelect(ind, e)}
                   />
                 )}
                 <Box2
@@ -227,6 +252,7 @@ export default function ShowAuths({ cu, auths, setAuths }) {
                 copy={copy}
                 onLongPress={onLongPress}
                 onLeave={onLeave}
+                onMove={onMove}
                 ind={ind}
               />
             ))}
@@ -261,23 +287,32 @@ function Box({ auth, copy }) {
   return (
     <div className="auth-box-1">
       <p className="name" onClick={() => copy(auth.value)}>
-        <p className="text">{auth.name}</p>
+        <span className="text">{auth.name}</span>
         <MdContentCopy className="icon" />
       </p>
       <p className="value">{auth.value}</p>
     </div>
   );
 }
-function Box2({ auth, copy, onLongPress, onLeave, onSelect = () => {}, ind }) {
+function Box2({
+  auth,
+  copy,
+  onLongPress,
+  onMove = () => {},
+  onLeave,
+  onSelect = () => {},
+  ind,
+}) {
   return (
     <div
       className="auth-box-2"
       onTouchStart={(e) => onLongPress(e, ind)}
       onTouchEnd={onLeave}
+      onTouchMove={onMove}
       onClick={() => onSelect(ind)}
     >
       <p className="name">
-        <p className="text">{auth.name}</p>
+        <span className="text">{auth.name}</span>
       </p>
       <div className="value-box">
         <div className="values">
