@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { auth, googleProvider } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,8 +6,12 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-function Signin({ cu, setCU }) {
+import { DataContext } from "../context/DataContext";
+
+function Signin() {
   const navigate = useNavigate();
+  const { cu, setCU } = useContext(DataContext);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCU(user);

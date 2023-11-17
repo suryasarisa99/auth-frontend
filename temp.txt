@@ -1,0 +1,31 @@
+  // const itemHeightRef = useRef(77.108);
+  // const topBarHeightRef = useRef(9.708);
+
+  // useRef(() => {
+  //   // itemHeightRef.current = longPress ? 78.092 + 0.1 : 77.108 + 1.5;
+  //   itemHeightRef.current = longPress ? 78.092 + 0.1 : 77.108;
+  //   topBarHeightRef.current = longPress ? 57 : 9.708;
+  //   topBarHeightRef.current = longPress ? 57 : 9.708;
+  // }, [longPress]);
+
+  // 77.108
+  // 78.092
+  // 0.984
+
+  // topbar: 18.708 - 9 = 9.708
+  // topbar: 66 -9 = 57
+  // auths: paddingTop: 32
+
+  // console.log(e.touches);
+  // if (e.touches.length >= 2) {
+  //   let y1 = calculateItem(e.touches[0].clientY);
+  //   let y2 = calculateItem(e.touches[1].clientY);
+  //   let s = y1 < y2 ? y1 : y2;
+  //   let b = y1 > y2 ? y1 : y2;
+  //   let temp = [];
+  //   for (let i = s; i <= b; i++) {
+  //     temp.push(i);
+  //   }
+  //   setSelected(temp);
+  //   setTimeout(() => setLongPress(true), 400);
+  // }

@@ -5,9 +5,9 @@ import CreateTotp from "./pages/CreateTotp";
 import ShowAuths from "./pages/ShowAuths";
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import NewCreate from "./pages/NewCreate";
+
 function App() {
-  const [cu, setCU] = useState();
-  const [auths, setAuths] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/signin");
@@ -16,16 +16,10 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/signin" element={<Signin cu={cu} setCU={setCU} />} />
-        <Route
-          path="/"
-          element={<ShowAuths cu={cu} auths={auths} setAuths={setAuths} />}
-        />
-        {/* <Route path="/sigin" element={<ShowAuths />} /> */}
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/" element={<ShowAuths />} />
+        <Route path="/create" element={<NewCreate />} />
       </Routes>
-      {/* <Signin cu={cu} setCU={setCU} />
-      <CreateTotp cu={cu} setAuths={setAuths} />
-      <ShowAuths cu={cu} auths={auths} setAuths={setAuths} /> */}
     </>
   );
 }

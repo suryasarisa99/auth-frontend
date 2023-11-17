@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { auth } from "../../firebase-config";
-export default function CreateTotp({ cu, setAuths, onCancel }) {
+import { DataContext } from "../context/DataContext";
+export default function CreateTotp({ onCancel }) {
+  const { cu, setAuths, server, setHotps } = useContext(DataContext);
   let [autoGen, setAutoGen] = useState(false);
   return (
     <div className="create-totp">
@@ -10,18 +12,16 @@ export default function CreateTotp({ cu, setAuths, onCancel }) {
         onSubmit={(e) => {
           e.preventDefault();
           axios
-            .post(
-              autoGen
-                ? "https://2fa-b.vercel.app/create-auth"
-                : "https://2fa-b.vercel.app/post-auth",
-              {
-                id: auth.currentUser.uid,
-                name: e.target.name.value,
-                key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
-              }
-            )
+            .post(autoGen ? `${server}/post-hotp` : `${server}/post-auth`, {
+              id: auth.currentUser.uid,
+              name: e.target.name.value,
+              key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
+            })
             .then((res) => {
-              setAuths((prvAuths) => [...prvAuths, res.data.auth]);
+              if (res.data.totp)
+                setAuths((prvAuths) => [...prvAuths, res.data.totp]);
+              else if (res.data.hotp)
+                setHotps((prv) => [...prv, res.data.hotp]);
             });
           onCancel();
         }}
