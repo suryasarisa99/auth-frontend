@@ -5,15 +5,21 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { DataContext } from "../context/DataContext";
 
-function Signin() {
+function GoogleSignin() {
   const navigate = useNavigate();
   const { cu, setCU } = useContext(DataContext);
+  const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log(user);
       setCU(user);
     });
     return () => unsubscribe();
@@ -22,22 +28,28 @@ function Signin() {
   useEffect(() => {
     console.log(cu);
     if (cu) navigate("/");
-  }, [cu]);
+  }, [cu, navigate]);
+
+  const signIn = () => {
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        return signInWithPopup(auth, googleProvider);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+      });
+  };
+
   return (
-    <div className="signin">
-      <p
-        className="google"
-        onClick={async (e) => {
-          e.preventDefault();
-          await signInWithPopup(auth, googleProvider);
-          setCU(auth.currentUser);
-          if (auth.currentUser) navigate("/");
-        }}
-      >
+    <div className="google-signin">
+      <p>Or</p>
+      <p className="google" onClick={signIn}>
         Sigin In With Google
       </p>
     </div>
   );
 }
 
-export default Signin;
+export default GoogleSignin;

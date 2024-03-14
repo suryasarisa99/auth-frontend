@@ -128,21 +128,6 @@ input {
   }
 }
 
-// @signin
-
-.signin {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  p.google {
-    background-color: rgb(0, 94, 255);
-    border-radius: 4px;
-    padding: 8px 12px;
-  }
-}
-
 .top-bar {
   position: fixed;
   top: -9px;
@@ -396,5 +381,36 @@ progress::-webkit-progress-value {
         }
       }
     }
+  }
+}
+
+.sign-up,
+.sign-in {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sign-up {
+  input {
+    width: 300px;
+  }
+
+  p {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+// @signin
+
+.google-signin {
+  p.google {
+    background-color: rgb(0, 94, 255);
+    border-radius: 4px;
+    padding: 8px 12px;
   }
 }

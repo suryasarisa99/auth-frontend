@@ -4,7 +4,7 @@ import { DataContext } from "../context/DataContext";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 export default function NewCreate({ onCancel }) {
-  const { server, setAuths, setHotps, cu } = useContext(DataContext);
+  const { server, setAuths, setHotps, cu, token } = useContext(DataContext);
   const [autoGen, setAutoGen] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [type, setType] = useState(0);
@@ -22,11 +22,14 @@ export default function NewCreate({ onCancel }) {
           e.preventDefault();
           axios
             .post(
-              autoGen
+              !autoGen
                 ? `${server}/post-${types[type]}`
                 : `${server}/create-${types[type]}`,
               {
-                id: cu.uid,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                id: cu?.uid,
                 name: e.target.name.value,
                 key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
               }

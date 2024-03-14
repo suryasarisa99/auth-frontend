@@ -1,26 +1,48 @@
 import { createContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { auth } from "../../firebase-config";
+import { auth, googleProvider } from "../../firebase-config";
+
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 
 const DataContext = createContext();
 export default function DataProvider({ children }) {
   const [auths, setAuths] = useState([]);
   const [hotps, setHotps] = useState([]);
-  const [cu, setCU] = useState();
+  const [cu, setCU] = useState(auth.currentUser);
   const [timer, setTimer] = useState([]);
   const [longPress, setLongPress] = useState(false);
   const [selectedTotps, setSelectedTotps] = useState([]);
   const [selectedHotps, setSelectedHotps] = useState([]);
   const itemHeightRef = useRef(78.092);
   const topBarHeightRef = useRef(57);
+  const [token, setToken] = useState("");
 
   // const server = "http://192.168.0.169:3000";
   const server = "https://2fa-b.vercel.app";
+  const timerRef = useRef();
+
+  useEffect(() => {
+    console.log(cu);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      setCU(user);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     setInterval(() => {
-      setTimer(calcTime());
-    }, 100);
+      timerRef.current = setTimer(calcTime());
+    }, 250);
+
+    return () => {
+      clearInterval(timerRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -43,14 +65,15 @@ export default function DataProvider({ children }) {
       });
   }
   function getUpdatedData() {
-    axios
-      .post(server, {
-        id: auth.currentUser.uid,
-      })
-      .then((res) => {
-        if (res.data.totps) setAuths(res.data.totps);
-        console.log(res.data.hotps);
-      });
+    if (auth.currentUser?.uid)
+      axios
+        .post(server, {
+          id: auth.currentUser.uid,
+        })
+        .then((res) => {
+          if (res.data.totps) setAuths(res.data.totps);
+          console.log(res.data.hotps);
+        });
   }
   function openOverlay() {
     document.getElementById("overlay").className = "";
@@ -100,6 +123,8 @@ export default function DataProvider({ children }) {
         selectedHotps,
         setSelectedTotps,
         setSelectedHotps,
+        token,
+        setToken,
       }}
     >
       {children}

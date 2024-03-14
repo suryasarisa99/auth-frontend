@@ -13,6 +13,7 @@ import { DataContext } from "../context/DataContext";
 import { MdModeEdit, MdClose } from "react-icons/md";
 import TopBar from "../components/TopBar";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 export default function ShowAuths() {
   const {
     cu,
@@ -56,7 +57,7 @@ export default function ShowAuths() {
   function copy(value) {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     setShowCopyDialog(true);
-    // navigator.clipboard.writeText(value);
+    navigator.clipboard.writeText(value);
     copyTimerRef.current = setTimeout(() => {
       setShowCopyDialog(false);
     }, 1200);
