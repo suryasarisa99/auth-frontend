@@ -36,6 +36,7 @@ export default function TopBar() {
               className="cross-icon"
               onClick={() => {
                 setLongPress(false);
+                history.back();
                 setSelectedTotps([]);
                 setSelectedHotps([]);
               }}

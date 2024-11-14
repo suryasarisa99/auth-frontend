@@ -50,6 +50,23 @@ export default function ShowAuths() {
     }
   }, [cu]);
 
+  useEffect(() => {
+    function handlePopState() {
+      if (longPress) {
+        console.log("popstate longpress");
+        setLongPress(false);
+        setSelectedTotps([]);
+        setSelectedHotps([]);
+      }
+    }
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [longPress]);
+
   function handleCancel() {
     closeOverlay();
     setShowDialog(false);
@@ -68,6 +85,7 @@ export default function ShowAuths() {
       longPressRef.current = e.currentTarget;
       longPressTimerRef.current = setTimeout(() => {
         setLongPress(true);
+        history.pushState({}, "", "/select");
         if (type == "totp") setSelectedTotps([ind]);
         else if (type == "hotp") setSelectedHotps([ind]);
       }, 550);
@@ -203,7 +221,11 @@ export default function ShowAuths() {
 
       <button
         className="float-btn"
-        onClick={() => {
+        onClick={async () => {
+          if (longPress) {
+            navigate(-1);
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
           navigate("/create");
           // openOverlay();
           // setShowDialog(true);

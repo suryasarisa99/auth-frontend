@@ -36,6 +36,6 @@ export default defineConfig({
   plugins: [react(), VitePWA(obj)],
   server: {
     port: 4444,
-    host: "192.168.0.169",
+    // host: "192.168.1.7",
   },
 });

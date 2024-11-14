@@ -44,7 +44,7 @@ function GoogleSignin() {
 
   return (
     <div className="google-signin">
-      <p>Or</p>
+      {/* <p>Or</p> */}
       <p className="google" onClick={signIn}>
         Sigin In With Google
       </p>

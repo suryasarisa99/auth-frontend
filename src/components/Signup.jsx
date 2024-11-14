@@ -31,13 +31,13 @@ export default function Signup() {
           });
       }}
     >
-      <h3>SignUp</h3>
+      {/* <h3>SignUp</h3>
       <input type="text" name="user" placeholder="username" />
       <input type="password" name="password" placeholder="password" />
       <button>Submit</button>
       <p>
         <Link to="/signin">Already Have a Account</Link>
-      </p>
+      </p> */}
 
       <GoogleSignin />
     </form>

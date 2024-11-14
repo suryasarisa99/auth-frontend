@@ -17,8 +17,8 @@ export default function DataProvider({ children }) {
   const topBarHeightRef = useRef(57);
   const [token, setToken] = useState("");
 
-  // const server = "http://192.168.0.169:3000";
-  const server = "https://2fa-b.vercel.app";
+  const server = "http://192.168.1.7:3000";
+  // const server = "https://2fa-b.vercel.app";
   const timerRef = useRef();
 
   useEffect(() => {
