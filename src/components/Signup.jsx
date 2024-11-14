@@ -4,18 +4,15 @@ import { DataContext } from "../context/DataContext";
 import GoogleSignin from "../pages/GoogleSignin";
 import { useNavigate, Link } from "react-router-dom";
 
-import { auth, googleProvider } from "../../firebase-config";
-
 export default function Signup() {
   const { server, authStatus } = useContext(DataContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(cu);
     if (authStatus == "loggedIn") {
       navigate("/");
     }
-  }, []);
+  }, [authStatus]);
 
   return (
     <form

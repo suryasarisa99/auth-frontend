@@ -13,10 +13,13 @@ import { DataContext } from "./context/DataContext";
 
 function App() {
   const navigate = useNavigate();
-  const { cu, authStatus } = useContext(DataContext);
+  const { authStatus } = useContext(DataContext);
   useEffect(() => {
+    console.log("authStatus", authStatus);
     if (authStatus == "notLoggedIn") navigate("/signup");
-  }, [cu]);
+  }, [authStatus]);
+
+  if (authStatus == "loading") return <div></div>;
 
   return (
     <>

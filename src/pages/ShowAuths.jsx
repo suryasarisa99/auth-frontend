@@ -17,7 +17,7 @@ import { signOut } from "firebase/auth";
 export default function ShowAuths() {
   const {
     cu,
-    setCu,
+    authStatus,
     auths,
     server,
     setAuths,
@@ -45,10 +45,10 @@ export default function ShowAuths() {
   const longPressRef = useRef(null);
 
   useEffect(() => {
-    if (cu) {
+    if (authStatus == "loggedIn") {
       getInitialData();
     }
-  }, [cu]);
+  }, [authStatus]);
 
   useEffect(() => {
     function handlePopState() {
