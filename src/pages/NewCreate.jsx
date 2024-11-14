@@ -21,19 +21,15 @@ export default function NewCreate({ onCancel }) {
         onSubmit={(e) => {
           e.preventDefault();
           axios
-            .post(
-              !autoGen
-                ? `${server}/post-${types[type]}`
-                : `${server}/create-${types[type]}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                id: cu?.uid,
-                name: e.target.name.value,
-                key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
-              }
-            )
+            .post(`${server}/create-${types[type]}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              id: cu?.uid,
+              name: e.target.name.value,
+              key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
+              autoGen: autoGen,
+            })
             .then((res) => {
               console.log(res.data);
               if (res.data.totp)

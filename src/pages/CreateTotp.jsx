@@ -15,6 +15,7 @@ export default function CreateTotp({ onCancel }) {
             .post(autoGen ? `${server}/post-hotp` : `${server}/post-auth`, {
               id: auth.currentUser.uid,
               name: e.target.name.value,
+              autoGen: autoGen,
               key: e.target?.token?.value?.trim()?.replace(/\s/g, ""),
             })
             .then((res) => {
