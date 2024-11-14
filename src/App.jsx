@@ -1,5 +1,5 @@
 import { SignInMethod } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GoogleSigninSignin from "./pages/GoogleSignin";
 import CreateTotp from "./pages/CreateTotp";
 import ShowAuths from "./pages/ShowAuths";
@@ -9,12 +9,14 @@ import NewCreate from "./pages/NewCreate";
 import Signup from "./components/Signup";
 import Signin from "./components/Signin";
 import Test from "./pages/TestGoogle";
+import { DataContext } from "./context/DataContext";
 
 function App() {
   const navigate = useNavigate();
+  const { cu, authStatus } = useContext(DataContext);
   useEffect(() => {
-    navigate("/signup");
-  }, []);
+    if (authStatus == "notLoggedIn") navigate("/signup");
+  }, [cu]);
 
   return (
     <>

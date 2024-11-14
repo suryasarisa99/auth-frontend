@@ -16,19 +16,23 @@ export default function DataProvider({ children }) {
   const itemHeightRef = useRef(78.092);
   const topBarHeightRef = useRef(57);
   const [token, setToken] = useState("");
+  const [authStatus, setAuthStatus] = useState("loading"); // loading | loggedIn | notLoggedIn
 
   // const server = "http://192.168.1.7:3000";
   const server = "https://2fa-b.vercel.app";
   const timerRef = useRef();
 
   useEffect(() => {
+    if (!auth.currentUser) return;
+    console.log("auth", auth);
     console.log(cu);
-  }, []);
+  }, [auth.currentUser]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log(user);
       setCU(user);
+      setAuthStatus(user ? "loggedIn" : "notLoggedIn");
     });
 
     // Cleanup subscription on unmount
@@ -109,6 +113,7 @@ export default function DataProvider({ children }) {
         server,
         cu,
         setCU,
+        authStatus,
         timer,
         setTimer,
         setHotps,

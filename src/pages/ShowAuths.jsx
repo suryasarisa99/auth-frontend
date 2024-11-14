@@ -74,7 +74,7 @@ export default function ShowAuths() {
   function copy(value) {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     setShowCopyDialog(true);
-    navigator.clipboard.writeText(value);
+    navigator?.clipboard?.writeText(value);
     copyTimerRef.current = setTimeout(() => {
       setShowCopyDialog(false);
     }, 1200);
@@ -142,7 +142,7 @@ export default function ShowAuths() {
       })
       .then((res) => {
         console.log(res.data.auth);
-        // copy(res.data.auth.value);
+        copy(res.data.auth.value);
         setHotps((prv) =>
           prv.map((_, i) => {
             if (ind == i) return res.data.auth;

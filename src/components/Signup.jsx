@@ -7,12 +7,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { auth, googleProvider } from "../../firebase-config";
 
 export default function Signup() {
-  const { server, cu, setCU } = useContext(DataContext);
+  const { server, authStatus } = useContext(DataContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(cu);
-    if (cu) navigate("/");
+    if (authStatus == "loggedIn") {
+      navigate("/");
+    }
   }, []);
 
   return (
